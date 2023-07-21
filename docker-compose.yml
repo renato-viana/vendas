@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0.33
+    container_name: mysql-server
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+      MYSQL_DATABASE: 'vendas_jsf'
+    ports:
+      - '3306:3306'
+    volumes:
+      - './data:/var/lib/mysql'
+    networks:
+      - mysql8-network
+
+  tomcat:
+    image: tomcat:8.5.91
+    container_name: tomcat-server
+    restart: always
+    ports:
+      - '8080:8080'
+    volumes:
+      - './target/vendas.war:/usr/local/tomcat/webapps/vendas.war'  # Mount the vendas.war from the target folder to Tomcat's webapps directory
+    networks:
+      - mysql8-network
+
+networks:
+  mysql8-network:
+    name: mysql8-network
+    driver: bridge

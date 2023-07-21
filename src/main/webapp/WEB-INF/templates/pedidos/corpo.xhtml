@@ -1,0 +1,65 @@
+<ui:composition
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="4" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo, rotulo, campo" styleClass="ui-noborder">
+		<p:outputLabel value="Número" rendered="#{cadastroPedidoBean.pedido.existente}"/>
+		<h:outputText value="#{cadastroPedidoBean.pedido.id}" rendered="#{cadastroPedidoBean.pedido.existente}"/>
+		
+		<p:outputLabel value="Data de Criação" rendered="#{cadastroPedidoBean.pedido.existente}"/>
+		<h:outputText value="#{cadastroPedidoBean.pedido.dataCriacao}" rendered="#{cadastroPedidoBean.pedido.existente}">
+			<f:convertDateTime pattern="dd/MM/yyyy"/>
+		</h:outputText>
+		
+		<p:outputLabel value="Status"/>
+		<h:outputText value="#{cadastroPedidoBean.pedido.status.descricao}"/>
+		
+		<p:outputLabel value="Vendedor" for="vendedor"/>
+		<p:selectOneMenu id="vendedor" value="#{cadastroPedidoBean.pedido.vendedor}" converter="#{usuarioConverter}" disabled="#{cadastroPedidoBean.pedido.naoAlteravel}">
+			<f:selectItem itemLabel="Selecione"/>
+			<f:selectItems value="#{cadastroPedidoBean.vendedores}" var="vendedor" itemValue="#{vendedor}" itemLabel="#{vendedor.nome}"/>
+		</p:selectOneMenu>
+		
+		<p:outputLabel value="Cliente" for="cliente"/>
+		<h:panelGroup>
+ 			<p:inputText id="cliente" value="#{cadastroPedidoBean.nomeCliente}" size="40" readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"/>
+ 	                        
+	        <p:commandButton icon="fa fa-fw fa-search" title="Pesquisar" process="@this" update="@none" ignoreAutoUpdate="true"
+	        				 disabled="#{cadastroPedidoBean.pedido.naoAlteravel}" action="#{selecaoClienteBean.abrirDialogo}">
+	        	<p:ajax event="dialogReturn" listener="#{cadastroPedidoBean.clienteSelecionado}" update="cliente" ignoreAutoUpdate="true" />
+	        </p:commandButton>                       				
+        </h:panelGroup>
+        				
+		<p:outputLabel value="Forma de Pagamento" for="formaPagamento"/>
+		<p:selectOneMenu id="formaPagamento" value="#{cadastroPedidoBean.pedido.formaPagamento}" disabled="#{cadastroPedidoBean.pedido.naoAlteravel}">
+			<f:selectItem itemLabel="Selecione"/>
+			<f:selectItems value="#{cadastroPedidoBean.formasPagamento}" var="formaPagamento" itemValue="#{formaPagamento}" itemLabel="#{formaPagamento.descricao}"/>
+		</p:selectOneMenu>
+	
+		<p:outputLabel value="Valor do Frete" for="valorFrete"/>
+		<p:inputText id="valorFrete" size="10" maxlength="10" value="#{cadastroPedidoBean.pedido.valorFrete}" styleClass="moeda" disabled="#{cadastroPedidoBean.pedido.naoAlteravel}">
+			<f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+			<p:ajax event="change" process="@this" update="totalPedido" listener="#{cadastroPedidoBean.recalcularPedido}"/>
+		</p:inputText>
+		
+		<p:outputLabel value="Subtotal" style="font-weight: bold"/>
+		<h:outputText value="#{cadastroPedidoBean.pedido.valorSubtotal}" style="font-weight: bold" id="subtotal">
+			<f:convertNumber type="currency"/>
+		</h:outputText>
+		
+		<p:outputLabel value="Valor do Desconto" for="valorDesconto"/>
+		<p:inputText id="valorDesconto" size="10" maxlength="10" value="#{cadastroPedidoBean.pedido.valorDesconto}" styleClass="moeda" disabled="#{cadastroPedidoBean.pedido.naoAlteravel}">
+			<f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+			<p:ajax event="change" process="@this" update="totalPedido" listener="#{cadastroPedidoBean.recalcularPedido}"/>
+		</p:inputText>
+	
+		<p:outputLabel value="Total do Pedido" style="font-weight: bold; font-size: 1.1em" for="totalPedido"/>
+		<h:outputText value="#{cadastroPedidoBean.pedido.valorTotal}" style="font-weight: bold; font-size: 1.1em" id="totalPedido">
+			<f:convertNumber type="currency"/>
+		</h:outputText>
+	</p:panelGrid>
+	
+</ui:composition>

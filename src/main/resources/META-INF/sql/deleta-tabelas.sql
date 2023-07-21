@@ -1,0 +1,9 @@
+DROP TABLE usuario_grupo;
+DROP TABLE itens_pedido;
+DROP TABLE pedidos;
+DROP TABLE enderecos;
+DROP TABLE clientes;
+DROP TABLE produtos;
+DROP TABLE categorias;
+DROP TABLE usuarios;
+DROP TABLE grupos;

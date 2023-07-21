@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  
+	  <h:head>
+	  		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<title> <ui:insert name="titulo">Sistema de Pedido de Vendas</ui:insert> </title>
+			
+			<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+			<h:outputStylesheet library="css" name="estilo.css"/>
+	  </h:head>
+	  
+	  <h:body>
+	  
+	  		<p:ajaxStatus styleClass="ajax-status" onsuccess="configurarMoeda()">
+	  			<f:facet name="start">
+	  				<h:graphicImage library="imagens" name="loading.gif"/>
+	  			</f:facet>
+	  			<f:facet name="complete">
+	  				<h:outputText value=""/>
+	  			</f:facet>
+	  		</p:ajaxStatus>
+	  
+  			<div id="cabecalho">
+  				<h:link id="logo" outcome="/index">
+  					<h:graphicImage library="imagens" name="logo-algaworks.png"/>
+  				</h:link>
+  				
+  				<div style="float: right; margin-right: 30px">
+  					<span id="usuario-logado">
+  						Olá, #{seguranca.nomeUsuario}
+  					</span>
+  				
+	  				<h:form style="display: inline-block">
+	  					<p:menubar styleClass="menu-sistema">
+	  						<p:submenu label="Cadastros">
+	  							<p:menuitem value="Clientes" icon="fa fa-fw fa-user-plus" outcome="/clientes/cadastro"/>
+	  							<p:menuitem value="Usuários" icon="fa fa-fw fa-users" outcome="/usuarios/cadastro"/>
+	  							<p:separator/>
+	  							<p:menuitem value="Categorias"/>
+	  							<p:menuitem value="Produtos" icon="fa fa-fw fa-th-large" outcome="/produtos/cadastro"/>
+	  						</p:submenu>
+	  						<p:submenu label="Pedidos">
+	  							<p:menuitem value="Novo" icon="fa fa-fw fa-cart-plus" outcome="/pedidos/cadastro"/>
+	  							<p:menuitem value="Pesquisa" icon="fa fa-fw fa-search" outcome="/pedidos/pesquisa"/>
+	  						</p:submenu>
+	  						<p:submenu label="Relatórios">
+	  							<p:menuitem value="Pedidos Emitidos" icon="fa fa-fw fa-file" outcome="/relatorios/pedidosEmitidos"/>
+	  							<p:menuitem value="Produtos" icon="fa fa-fw fa-file" outcome="/relatorios/produtos"/>
+	  						</p:submenu>
+	  						
+	  						<p:menuitem value="Sair" icon="fa fa-fw fa-sign-out" style="color:white" 
+	  						             url="#{facesContext.externalContext.request.contextPath}/logout"/>
+	  					</p:menubar>
+	  				</h:form>
+  				</div>
+  			</div>
+	  
+		    <div id="conteudo">
+			    <ui:insert name="corpo"/>
+		    </div>
+		
+			<p:separator style="margin-top: 20px"/>
+		
+			<div id="rodape">
+				Curso Online de Sistemas Comerciais Java EE com CDI, JPA e PrimeFaces -
+				<a href="http://bit.ly/Y8saFl" target="_blank">www.algaworks.com</a>
+			</div>
+			
+			<h:outputScript library="js" name="jquery.maskMoney.js"/>
+			<h:outputScript library="js" name="validadores.js"/>
+			
+			<script>
+				function configurarMoeda() {
+					$(".moeda").maskMoney({ decimal: ",", thousands: ".", allowZero: true });
+				}
+				
+				$(document).ready(function() {
+					configurarMoeda();
+				});
+			</script>
+
+	  </h:body>
+</html>

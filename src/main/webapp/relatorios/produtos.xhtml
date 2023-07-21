@@ -1,0 +1,44 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Relatório de Produtos</ui:define>
+	
+	<ui:define name="corpo">
+		
+		<h:form prependId="false" id="frmRelatorio">
+			<h1>Relatório de Produtos</h1>
+		
+			<p:messages closable="true" id="msg">
+				<p:autoUpdate/>
+			</p:messages>
+			
+			<p:toolbar id="toolbar">
+				<p:toolbarGroup>
+					<p:commandButton icon="fa fa-fw fa-file-pdf-o" value="Emitir" action="#{relatorioProdutosBean.emitir}" ajax="false"/>
+				</p:toolbarGroup>
+			</p:toolbar>		
+		
+			<p:panelGrid columns="2" id="painel" columnClasses="rotulo, campo" styleClass="ui-noborder">
+				<p:outputLabel value="Valor Unitário" />
+				<h:panelGroup>
+					<p:inputText value="#{relatorioProdutosBean.valorInicio}" styleClass="moeda" size="10">
+		    			<f:convertNumber minFractionDigits="2" maxFractionDigits="2" locale="pt_BR"/>
+		    		</p:inputText>
+					
+					<p:spacer width="8"/>
+					<h:outputText value="a"/>
+					<p:spacer width="8"/>
+					
+					<p:inputText value="#{relatorioProdutosBean.valorFim}" styleClass="moeda" size="10">
+		    			<f:convertNumber minFractionDigits="2" maxFractionDigits="2" locale="pt_BR"/>
+		    		</p:inputText>
+				</h:panelGroup>
+			</p:panelGrid>		
+		</h:form>
+	
+	</ui:define>
+</ui:composition>
